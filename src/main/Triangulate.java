@@ -45,6 +45,9 @@ public class Triangulate extends Application {
         // calculate and draw triangulation
         drawTriangulation(group, polygon);
 
+        // calculate the polygon's area
+        System.out.println("The polygon's area is " + (areaPoly2(polygon) / 2));
+
         // window setup
         Scene scene = new Scene(group);
         stage.setScene(scene);
@@ -192,9 +195,7 @@ public class Triangulate extends Application {
         Point c = polygon.getPoint(ind);
         do {
             Point c1 = polygon.getPoint(ind + 1);
-            if (!c.equals(a) && !c1.equals(a) && !c.equals(b) && !c1.equals(b)) {
-                return !intersect(a, b, c, c1);
-            }
+            if (!c.equals(a) && !c1.equals(a) && !c.equals(b) && !c1.equals(b) && intersect(a, b, c, c1)) return false;
             ind++;
             c = polygon.getPoint(ind);
         } while(ind < polygon.getSize());
@@ -269,7 +270,6 @@ public class Triangulate extends Application {
             // select the first vertex of the polygon
             v2 = 0;
             do {
-
                 // check if polygon is an ear
                 if (polygon.getEarStatus(v2)) {
                     v0 = v2 - 2;
