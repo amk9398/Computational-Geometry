@@ -53,7 +53,7 @@ public class Polygon {
     private int getModIndex(int index) {
         int modIndex = index % getSize();
         if (modIndex >= 0) return modIndex;
-        else return index + modIndex;
+        else return modIndex + getSize();
     }
 
 }
