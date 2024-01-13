@@ -11,7 +11,9 @@
 package shape;
 
 public class Diagonal {
+    /** Initial point of the diagonal. */
     private final Point p1;
+    /** Terminal point of the diagonal. */
     private final Point p2;
 
     public Diagonal(Point p1, Point p2) {
@@ -26,5 +28,12 @@ public class Diagonal {
     @Override
     public String toString() {
         return "[" + p1 + ", " + p2 + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof Diagonal d)) return false;
+        return p1.equals(d.getP1()) && p2.equals(d.getP2());
     }
 }

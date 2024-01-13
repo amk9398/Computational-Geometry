@@ -24,15 +24,28 @@ public class Drawing {
      * @param p1 the initial point.
      * @param p2 the terminal point.
      */
+    public static void drawLine(Group group, Point p1, Point p2) {
+        drawLine(group, p1, p2, 1);
+    }
+
+    /**
+     * Draws a line from the first points p1 to the second point p2.
+     * @param group the JavaFX Group that the line will be added to.
+     * @param p1 the initial point.
+     * @param p2 the terminal point.
+     * @param strokeWidth width of the line. default is 1.
+     */
     public static void drawLine(Group group, Point p1, Point p2, int strokeWidth) {
         Line line = new Line(p1.getX(), p1.getY(), p2.getX(), p2.getY());
         line.setStrokeWidth(strokeWidth);
         group.getChildren().add(line);
     }
-    public static void drawLine(Group group, Point p1, Point p2) {
-        drawLine(group, p1, p2, 1);
-    }
 
+    /**
+     * Draws a diagonal.
+     * @param group the JavaFX Group that the line will be added to.
+     * @param diagonal the diagonal to be drawn.
+     */
     public static void drawDiagonal(Group group, Diagonal diagonal) {
         drawLine(group, diagonal.getP1(), diagonal.getP2());
     }

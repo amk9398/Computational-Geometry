@@ -30,31 +30,30 @@ public class Polygon {
 
     public ArrayList<Point> getPoints() {return points;}
 
-    public Point getPoint(int index) {
-        int modIndex = index % getSize();
-        if (modIndex >= 0) return points.get(modIndex);
-        else return points.get(getSize() + modIndex);
-    }
+    public Point getPoint(int v) {return points.get(getModIndex(v));}
 
     public ArrayList<Boolean> getEars() {return ears;}
 
-    public boolean getEarStatus(int v) {
-        int modV = v % getSize();
-        if (modV >= 0) return ears.get(modV);
-        else return ears.get(getSize() + modV);
-    }
+    public boolean getEarStatus(int v) {return ears.get(getModIndex(v));}
 
     public int getSize() {return points.size();}
 
-    public void setEarStatus(boolean ear, int v) {
-        int modV = v % getSize();
-        if (modV < 0) modV = getSize() + modV;
-        ears.set(modV, ear);
-    }
+    public void setEarStatus(boolean ear, int v) {ears.set(getModIndex(v), ear);}
 
     public void removeVertex(int v) {
         points.remove(v);
         ears.remove(v);
+    }
+
+    /**
+     * Get the index modded by the polygon size to mimic its cyclical nature.
+     * @param index input index.
+     * @return index modded by the polygon size (negatives index from the end).
+     */
+    private int getModIndex(int index) {
+        int modIndex = index % getSize();
+        if (modIndex >= 0) return modIndex;
+        else return index + modIndex;
     }
 
 }

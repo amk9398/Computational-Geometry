@@ -163,7 +163,6 @@ public class Triangulate extends Application {
     }
 
     public static void drawTriangulation(Group group, Polygon polygon) {
-        System.out.println("Area of polygon is " + (0.5 * areaPoly2(polygon)));
         Polygon copyPolygon = new Polygon(polygon);
         ArrayList<Diagonal> diagonals = triangulate(copyPolygon);
         for (Diagonal diagonal : diagonals) {
