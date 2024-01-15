@@ -1,6 +1,6 @@
 /**
- * FILE: main.Triangulate.java
- * LOC: src
+ * FILE: Triangulation.java
+ * LOC: main
  *
  * AUTHOR: Aaron Kersten, aaronkersten21@gmail.com
  * DATE: 1/12/2024
@@ -19,10 +19,9 @@ import shape.Diagonal;
 import shape.Point;
 import shape.Polygon;
 import java.util.ArrayList;
-
 import static tools.PolygonTools.readPolygon;
 
-public class Triangulate extends Application {
+public class Triangulation extends Application {
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -31,7 +30,7 @@ public class Triangulate extends Application {
     @Override
     public void start(Stage stage) {
         // read polygon data from file
-        Polygon polygon = readPolygon("src/data/poly2.txt");
+        Polygon polygon = readPolygon("src/data/poly7.txt");
         if (polygon == null) {
             System.out.println("Could not read polygon file.");
             return;
@@ -227,7 +226,7 @@ public class Triangulate extends Application {
 
     /**
      * Determines whether v1->v2 is a diagonal of the polygon.
-     * If v1 is in the cone around v2, v2 is in the cone around v1, and v1->v2 does not intersect any vertices
+     * If v1 is in the cone around v2, v2 is in the cone around v1, and v1->v2 does not intersect any edges
      * of the polygon, then v1->v2 is a diagonal.
      * @param polygon the shape that is being evaluated.
      * @param v1 the first vertex of the diagonal.

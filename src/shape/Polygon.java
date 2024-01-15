@@ -56,4 +56,11 @@ public class Polygon {
         else return modIndex + getSize();
     }
 
+    public int getVertexNumber(Point point) {
+        for (int i = 0; i < getSize(); i++) {
+            if (getPoint(i).equals(point)) return i;
+        }
+        return -1;
+    }
+
 }
