@@ -11,6 +11,7 @@
 package shape;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Polygon {
     /** Points follow a counterclockwise traversal of the polygon. */
@@ -18,8 +19,8 @@ public class Polygon {
     /** Ear status for each vertex of the polygon. Initialized to all false. */
     private ArrayList<Boolean> ears = new ArrayList<>();
 
-    public Polygon(ArrayList<Point> points) {
-        this.points = points;
+    public Polygon(List<Point> points) {
+        this.points = new ArrayList<>(points);
         for (Point p : points) ears.add(false);
     }
 
@@ -41,8 +42,8 @@ public class Polygon {
     public void setEarStatus(boolean ear, int v) {ears.set(getModIndex(v), ear);}
 
     public void removeVertex(int v) {
-        points.remove(v);
-        ears.remove(v);
+        points.remove(getModIndex(v));
+        ears.remove(getModIndex(v));
     }
 
     /**

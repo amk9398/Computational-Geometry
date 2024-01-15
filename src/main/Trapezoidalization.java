@@ -33,7 +33,7 @@ public class Trapezoidalization extends Application {
     @Override
     public void start(Stage stage) {
         // read polygon data from file
-        Polygon polygon = readPolygon("src/data/poly7.txt");
+        Polygon polygon = readPolygon("src/data/poly6.txt");
         if (polygon == null) {
             System.out.println("Could not read polygon file.");
             return;
@@ -111,12 +111,41 @@ public class Trapezoidalization extends Application {
         return piercedX.size();
     }
 
-    public static boolean reflex(Point a, Point b, Point c) {
-        return !leftOn(a, b, c);
+    /**
+     * Determines if a vertex is reflex (has an internal angle greater than 180 degrees).
+     * @param v the central vertex.
+     * @param v1 the vertex following v.
+     * @param v0 the vertex before v.
+     * @return true if v is reflex; otherwise, false.
+     */
+    public static boolean reflex(Point v, Point v1, Point v0) {
+        return !leftOn(v, v1, v0);
     }
 
+    /**
+     * Creates a horizontal with one end as the given point and the other being the intersection of the horizontal
+     * with the polygon.
+     * @param pierced the list of pierced edges.
+     * @param p the vertex of interest.
+     * @param index the position of the vertex in the pierced list.
+     * @return a horizontal segment.
+     */
     public static Segment horizontal(ArrayList<Segment> pierced, Point p, int index) {
         return new Segment(p, new Point(findIntersectionX(pierced.get(index), p.getY()), p.getY()));
+    }
+
+    /**
+     * Creates a horizontal with an interior vertex. Both ends lie on the polygon's boundary but not on a vertex.
+     * @param pierced the list of pierced edges.
+     * @param p the vertex of interest.
+     * @param index the position of the vertex in the pierced list.
+     * @return a horizontal segment.
+     */
+    public static Segment horizontalInt(ArrayList<Segment> pierced, Point p, int index) {
+        return new Segment(
+                new Point(findIntersectionX(pierced.get(index - 1), p.getY()), p.getY()),
+                new Point(findIntersectionX(pierced.get(index), p.getY()), p.getY())
+        );
     }
 
     /**
@@ -131,21 +160,31 @@ public class Trapezoidalization extends Application {
         Segment s0, s1;
         int index, v0, v1;
         for (int v : sortVerticesY(polygon)) {
+            // current vertex
             p = polygon.getPoint(v);
+
+            // vertices before and after p in the polygon
             p0 = polygon.getPoint(v - 1);
             p1 = polygon.getPoint(v + 1);
+
+            // edges incident to p
             s0 = new Segment(p0, p);
             s1 = new Segment(p, p1);
+
+            // position of p in the pierced edge list
             index = findVertex(pierced, p);
+
+            // indices of incident edges
             v0 = pierced.indexOf(s0);
             v1 = pierced.indexOf(s1);
+
+            // check type of vertex (points down, points right, points left, and points up)
             if (v0 == -1 && v1 == -1) {
                 if (reflex(p, p1, p0)) {
-                    segments.add(horizontal(pierced, p, index - 1));
-                    segments.add(horizontal(pierced, p, index));
+                    segments.add(horizontalInt(pierced, p, index));
                 }
-                pierced.add(index, s0.getP1().getX() < s1.getP1().getX() ? s1 : s0);
-                pierced.add(index, s0.getP1().getX() < s1.getP1().getX() ? s0 : s1);
+                pierced.add(index, p0.getX() < p1.getX() ? s1 : s0);
+                pierced.add(index, p0.getX() < p1.getX() ? s0 : s1);
             } else if (v0 == -1) {
                 segments.add(horizontal(pierced, p, index - 1));
                 pierced.set(v1, s0);
@@ -156,11 +195,11 @@ public class Trapezoidalization extends Application {
                 pierced.remove(s0);
                 pierced.remove(s1);
                 if (reflex(p, p1, p0)) {
-                    segments.add(horizontal(pierced, p, index - 1));
-                    segments.add(horizontal(pierced, p, index));
+                    segments.add(horizontalInt(pierced, p, index));
                 }
             }
         }
+
         return segments;
     }
 

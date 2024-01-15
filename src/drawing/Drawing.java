@@ -55,14 +55,18 @@ public class Drawing {
      * @param group the JavaFX Group that the line will be added to.
      * @param polygon the polygon to be drawn.
      */
-    public static void drawPolygon(Group group, Polygon polygon) {
+    public static void drawPolygon(Group group, Polygon polygon, int strokeWidth) {
         int v1 = 0;
         int v2 = 1;
         do {
-            drawLine(group, polygon.getPoint(v1), polygon.getPoint(v2), 2);
+            drawLine(group, polygon.getPoint(v1), polygon.getPoint(v2), strokeWidth);
             v1 = (v1 + 1) % polygon.getSize();
             v2 = (v2 + 1) % polygon.getSize();
         } while (v1 > 0);
+    }
+
+    public static void drawPolygon(Group group, Polygon polygon) {
+        drawPolygon(group, polygon, 2);
     }
 
 }
